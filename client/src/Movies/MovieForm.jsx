@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/core';
 import { useRouteMatch, useHistory } from 'react-router-dom';
+import Stars from './Stars';
 
 const MovieForm = ({ movieToUpdate, setMovieToUpdate }) => {
   const history = useHistory();
@@ -80,6 +81,9 @@ const MovieForm = ({ movieToUpdate, setMovieToUpdate }) => {
           autoComplete="on"
         />
       </FormControl>
+
+      <h2>Stars</h2>
+      <Stars movie={movie} setMovie={setMovie} />
 
       <Button type="submit" variantColor="blue" mr={3}>
         Submit
