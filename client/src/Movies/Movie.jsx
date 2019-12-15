@@ -6,6 +6,7 @@ const Movie = ({
   match: {
     params: { id },
   },
+  savedList,
   addToSavedList,
 }) => {
   const [movie, setMovie] = useState(null);
@@ -28,8 +29,14 @@ const Movie = ({
         role="button"
         tabIndex={0}
         className="save-button"
-        onKeyPress={saveMovie}
-        onClick={saveMovie}
+        onKeyPress={() =>
+          !savedList.some((savedMovie) => savedMovie.id === movie.id) &&
+          saveMovie()
+        }
+        onClick={() =>
+          !savedList.some((savedMovie) => savedMovie.id === movie.id) &&
+          saveMovie()
+        }
       >
         Save
       </div>
