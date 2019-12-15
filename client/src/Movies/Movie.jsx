@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useRouteMatch } from 'react-router-dom';
+import { NavLink, useRouteMatch } from 'react-router-dom';
 import axios from 'axios';
+import { Button } from '@chakra-ui/core';
 import MovieCard from './MovieCard';
 
-const Movie = ({ savedList, addToSavedList }) => {
+const Movie = ({ savedList, addToSavedList, setMovieToUpdate }) => {
   const [movie, setMovie] = useState(null);
   const {
     params: { id },
@@ -38,6 +39,9 @@ const Movie = ({ savedList, addToSavedList }) => {
       >
         Save
       </div>
+      <Button onClick={() => setMovieToUpdate(movie)}>
+        <NavLink to={`/update-movie/${id}`}>Update Movie</NavLink>
+      </Button>
     </div>
   ) : (
     <div>Loading movie information...</div>
