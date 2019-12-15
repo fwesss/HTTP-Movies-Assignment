@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useRouteMatch } from 'react-router-dom';
 import axios from 'axios';
 import MovieCard from './MovieCard';
 
-const Movie = ({
-  match: {
-    params: { id },
-  },
-  savedList,
-  addToSavedList,
-}) => {
+const Movie = ({ savedList, addToSavedList }) => {
   const [movie, setMovie] = useState(null);
+  const {
+    params: { id },
+  } = useRouteMatch('/movies/:id');
 
   useEffect(() => {
     axios
