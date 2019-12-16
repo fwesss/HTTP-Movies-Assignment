@@ -5,7 +5,7 @@ import SavedList from '../Movies/SavedList';
 import MovieList from '../Movies/MovieList';
 import Movie from '../Movies/Movie';
 import MovieForm from '../Movies/MovieForm';
-import theme from './theme';
+import customTheme from './theme';
 
 const App = () => {
   const [savedList, setSavedList] = useState([]);
@@ -15,8 +15,15 @@ const App = () => {
     setSavedList([...savedList, movie]);
   };
 
+  const deleteFromSavedList = (id) => {
+    const updatedList = savedList.filter(
+      (movie) => movie.id !== parseInt(id, 10)
+    );
+    setSavedList(updatedList);
+  };
+
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={customTheme}>
       <SavedList list={savedList} />
       <Route exact path={['/', '/movies']} component={MovieList} />
       <Route
@@ -27,6 +34,7 @@ const App = () => {
               savedList={savedList}
               addToSavedList={addToSavedList}
               setMovieToUpdate={setMovieToUpdate}
+              deleteFromSavedList={deleteFromSavedList}
             />
           );
         }}

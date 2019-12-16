@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useRouteMatch } from 'react-router-dom';
+import { NavLink, useHistory, useRouteMatch } from 'react-router-dom';
 import axios from 'axios';
-import { Button } from '@chakra-ui/core';
+import { ButtonGroup, Button, Link } from '@chakra-ui/core';
 import MovieCard from './MovieCard';
 
-const Movie = ({ savedList, addToSavedList, setMovieToUpdate }) => {
+const Movie = ({
+  savedList,
+  addToSavedList,
+  setMovieToUpdate,
+  deleteFromSavedList,
+}) => {
+  const history = useHistory();
   const [movie, setMovie] = useState(null);
   const {
     params: { id },
   } = useRouteMatch('/movies/:id');
+  const [deleteMovie, setDeleteMovie] = useState(false);
 
   useEffect(() => {
     axios
@@ -16,6 +23,18 @@ const Movie = ({ savedList, addToSavedList, setMovieToUpdate }) => {
       .then((res) => setMovie(res.data))
       .catch((err) => console.log(err.response));
   }, [id]);
+
+  useEffect(() => {
+    if (deleteMovie) {
+      axios
+        .delete(`http://localhost:5000/api/movies/${id}`)
+        .then(() => {
+          deleteFromSavedList(id);
+          history.push('/movies');
+        })
+        .catch((error) => error);
+    }
+  }, [deleteFromSavedList, deleteMovie, history, id]);
 
   const saveMovie = () => {
     addToSavedList(movie);
@@ -39,9 +58,16 @@ const Movie = ({ savedList, addToSavedList, setMovieToUpdate }) => {
       >
         Save
       </div>
-      <Button onClick={() => setMovieToUpdate(movie)}>
-        <NavLink to={`/update-movie/${id}`}>Update Movie</NavLink>
-      </Button>
+      <ButtonGroup>
+        <Button variantColor="red" onClick={() => setDeleteMovie(true)}>
+          Delete
+        </Button>
+        <Button role="link" onClick={() => setMovieToUpdate(movie)}>
+          <Link as={NavLink} to={`/update-movie/${id}`}>
+            Update Movie
+          </Link>
+        </Button>
+      </ButtonGroup>
     </div>
   ) : (
     <div>Loading movie information...</div>

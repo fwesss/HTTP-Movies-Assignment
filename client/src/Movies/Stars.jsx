@@ -1,22 +1,21 @@
 import React from 'react';
 import { FormControl, Input } from '@chakra-ui/core';
 
-const Stars = ({ movie, movie: { stars }, setMovie }) => {
+const Stars = ({ movie, setMovie }) => {
   const handleChange = (event) => {
-    console.log(movie);
-    const updatedStars = [...stars];
+    const updatedStars = [...movie.stars];
     updatedStars[event.target.name] = event.target.value;
 
     setMovie({ ...movie, stars: updatedStars });
   };
 
-  return stars ? (
-    stars.map((star) => (
-      <FormControl key={stars.indexOf(star)} isRequired>
+  return movie.stars ? (
+    movie.stars.map((star) => (
+      <FormControl key={movie.stars.indexOf(star)} isRequired>
         <Input
-          id={stars.indexOf(star)}
+          id={movie.stars.indexOf(star)}
           type="text"
-          name={stars.indexOf(star)}
+          name={movie.stars.indexOf(star)}
           value={star}
           onChange={handleChange}
           autoComplete="on"
