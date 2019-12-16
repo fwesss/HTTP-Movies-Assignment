@@ -16,10 +16,7 @@ const App = () => {
   };
 
   const deleteFromSavedList = (id) => {
-    const updatedList = savedList.filter(
-      (movie) => movie.id !== parseInt(id, 10)
-    );
-    setSavedList(updatedList);
+    setSavedList(savedList.filter((movie) => movie.id !== parseInt(id, 10)));
   };
 
   return (
@@ -41,15 +38,18 @@ const App = () => {
       />
       <Route
         path="/update-movie/:id"
-        render={() => {
+        render={({ match }) => {
           return (
             <MovieForm
+              path="/update-movie/:id"
+              match={match}
               movieToUpdate={moveToUpdate}
               setMovieToUpdate={setMovieToUpdate}
             />
           );
         }}
       />
+      <Route path="/add-movie" component={MovieForm} />
     </ThemeProvider>
   );
 };

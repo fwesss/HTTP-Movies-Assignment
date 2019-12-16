@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/core';
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Stars from './Stars';
 
-const MovieForm = ({ movieToUpdate, setMovieToUpdate }) => {
+const MovieForm = ({
+  match: { params: { id } } = null,
+  movieToUpdate = null,
+  setMovieToUpdate = () => null,
+}) => {
   const history = useHistory();
-  const {
-    params: { id },
-  } = useRouteMatch('/update-movie/:id');
-  const [movie, setMovie] = useState(movieToUpdate || null);
+  const [movie, setMovie] = useState(
+    movieToUpdate || {
+      title: '',
+      director: '',
+      metascore: 0,
+      stars: [''],
+    }
+  );
   const [submit, setSubmit] = useState(false);
 
   const handleChange = (event) => {
@@ -32,7 +40,7 @@ const MovieForm = ({ movieToUpdate, setMovieToUpdate }) => {
       } else {
         axios
           .post('http://localhost:5000/api/movies/', movie)
-          .then((response) => response)
+          .then(() => history.push('/movies'))
           .catch((error) => error);
       }
     }
